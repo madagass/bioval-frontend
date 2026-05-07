@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@clerk/nextjs";
 import { getLogs } from "@/lib/api/logs";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable } from "@/components/shared/data-table";
@@ -20,9 +21,15 @@ const columns = [
 ];
 
 export default function LogsPage() {
+  const { getToken, isLoaded } = useAuth();
   const { data, isLoading } = useQuery({
     queryKey: ["logs"],
-    queryFn: getLogs,
+    queryFn: async () => {
+      const token = await getToken();
+      if (!token) return null;
+      return getLogs(token);
+    },
+    enabled: isLoaded,
   });
 
   return (

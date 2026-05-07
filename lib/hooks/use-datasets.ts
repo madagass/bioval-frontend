@@ -8,36 +8,41 @@ import {
 } from "@/lib/api/datasets";
 
 export function useDatasets() {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["datasets"],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getDatasets(token);
     },
+    enabled: isLoaded,
   });
 }
 
 export function useDataset(id: string) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["datasets", id],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getDataset(id, token);
     },
-    enabled: !!id,
+    enabled: isLoaded && !!id,
   });
 }
 
 export function useFamilles() {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["familles"],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getFamilles(token);
     },
+    enabled: isLoaded,
   });
 }
 

@@ -8,25 +8,28 @@ import {
 } from "@/lib/api/users";
 
 export function useUsers() {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getUsers(token);
     },
+    enabled: isLoaded,
   });
 }
 
 export function useUser(id: string) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["users", id],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getUser(id, token);
     },
-    enabled: !!id,
+    enabled: isLoaded && !!id,
   });
 }
 

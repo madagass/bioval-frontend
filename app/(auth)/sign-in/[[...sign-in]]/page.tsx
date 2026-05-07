@@ -10,7 +10,7 @@ export default function SignInPage() {
             Biomass data management platform
           </p>
         </div>
-        <SignIn />
+        <SignIn afterSignOutUrl="/dashboard" />
       </div>
     </div>
   );

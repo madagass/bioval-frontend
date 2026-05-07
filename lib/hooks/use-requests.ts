@@ -7,25 +7,28 @@ import {
 } from "@/lib/api/requests";
 
 export function useRequests() {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["requests"],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getRequests(token);
     },
+    enabled: isLoaded,
   });
 }
 
 export function useRequest(id: string) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["requests", id],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getRequest(id, token);
     },
-    enabled: !!id,
+    enabled: isLoaded && !!id,
   });
 }
 

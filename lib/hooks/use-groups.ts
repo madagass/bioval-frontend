@@ -8,25 +8,28 @@ import {
 } from "@/lib/api/groups";
 
 export function useGroups() {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["groups"],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getGroups(token);
     },
+    enabled: isLoaded,
   });
 }
 
 export function useGroup(id: string) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["groups", id],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getGroup(id, token);
     },
-    enabled: !!id,
+    enabled: isLoaded && !!id,
   });
 }
 

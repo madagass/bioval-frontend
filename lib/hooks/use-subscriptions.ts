@@ -8,37 +8,41 @@ import {
 } from "@/lib/api/subscriptions";
 
 export function useSubscriptions() {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getSubscriptions(token);
     },
+    enabled: isLoaded,
   });
 }
 
 export function useSubscription(id: string) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["subscriptions", id],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getSubscription(id, token);
     },
-    enabled: !!id,
+    enabled: isLoaded && !!id,
   });
 }
 
 export function useSubscriptionByGroup(groupId: string) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["subscriptions", "group", groupId],
     queryFn: async () => {
       const token = await getToken();
+      if (!token) return null;
       return getSubscriptionByGroup(groupId, token);
     },
-    enabled: !!groupId,
+    enabled: isLoaded && !!groupId,
   });
 }
 

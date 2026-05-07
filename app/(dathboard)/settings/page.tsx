@@ -10,7 +10,7 @@ export default function SettingsPage() {
         title="Settings"
         description="Manage your account and preferences"
       />
-      <UserProfile />
+      <UserProfile routing="hash" />
     </div>
   );
 }
