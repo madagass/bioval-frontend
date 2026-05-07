@@ -19,7 +19,7 @@ export function Header() {
             {getRoleLabel(role)}
           </Badge>
         )}
-        <UserButton afterSignOutUrl="/sign-in" />
+        <UserButton />
       </div>
     </header>
   );
