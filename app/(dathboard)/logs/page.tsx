@@ -37,7 +37,7 @@ export default function LogsPage() {
       allowedRoles={["admin_global"]}
       fallback={
         <div className="text-muted-foreground text-sm">
-          You don't have access to this page.
+          You don&apos;t have access to this page.
         </div>
       }
     >

@@ -3,7 +3,6 @@
 import { useRole } from "@/lib/hooks/use-role";
 import { useDeleteDataset, useValidateDataset, useRejectDataset } from "@/lib/hooks/use-datasets";
 import { DataTable } from "@/components/shared/data-table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatFileSize, getStatusColor } from "@/lib/utils";
 import { type Dataset } from "@/lib/types";

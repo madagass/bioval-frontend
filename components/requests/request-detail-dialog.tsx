@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { formatDateTime, getStatusColor } from "@/lib/utils";
 import { type AccessRequest } from "@/lib/types";
 

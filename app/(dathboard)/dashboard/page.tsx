@@ -10,7 +10,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Users, Database, FileText, CreditCard } from "lucide-react";
 
 export default function DashboardPage() {
-  const { role, isAdminGlobal, isAdminMetier } = useRole();
+  const { isAdminGlobal, isAdminMetier } = useRole();
   const { data: users } = useUsers();
   const { data: datasets } = useDatasets();
   const { data: requests } = useRequests();

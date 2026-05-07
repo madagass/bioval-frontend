@@ -6,6 +6,7 @@ import {
   getUsers, getUser, createUser, updateUser, deleteUser,
   toggleFreeAccess, toggleUserActive, updateUserRole,
 } from "@/lib/api/users";
+import { type User } from "@/lib/types";
 
 export function useUsers() {
   const { getToken, isLoaded } = useAuth();
@@ -20,7 +21,7 @@ export function useUsers() {
   });
 }
 
-export function useUser(id: string) {
+export function useUserById(id: string) {
   const { getToken, isLoaded } = useAuth();
   return useQuery({
     queryKey: ["users", id],
@@ -37,7 +38,7 @@ export function useCreateUser() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Partial<User>) => {
       const token = await getToken();
       return createUser(data, token);
     },
@@ -49,7 +50,7 @@ export function useUpdateUser() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<User> }) => {
       const token = await getToken();
       return updateUser(id, data, token);
     },

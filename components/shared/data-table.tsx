@@ -26,7 +26,7 @@ interface DataTableProps<T> {
   isLoading?: boolean;
 }
 
-export function DataTable<T extends Record<string, any>>({
+export function DataTable<T extends Record<string, unknown>>({
   data,
   columns,
   searchKey,
@@ -81,7 +81,7 @@ export function DataTable<T extends Record<string, any>>({
                 <TableRow key={i}>
                   {columns.map((col) => (
                     <TableCell key={col.key}>
-                      {col.render ? col.render(row) : row[col.key]}
+                      {col.render ? col.render(row) : String(row[col.key] ?? "")}
                     </TableCell>
                   ))}
                 </TableRow>

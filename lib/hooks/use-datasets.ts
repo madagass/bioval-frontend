@@ -6,6 +6,7 @@ import {
   getDatasets, getDataset, uploadDataset, updateDataset,
   deleteDataset, validateDataset, rejectDataset, getFamilles,
 } from "@/lib/api/datasets";
+import { type Dataset } from "@/lib/types";
 
 export function useDatasets() {
   const { getToken, isLoaded } = useAuth();
@@ -62,7 +63,7 @@ export function useUpdateDataset() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Dataset> }) => {
       const token = await getToken();
       return updateDataset(id, data, token);
     },

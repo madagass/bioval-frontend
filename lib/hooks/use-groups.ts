@@ -6,6 +6,7 @@ import {
   getGroups, getGroup, createGroup, updateGroup,
   deleteGroup, addMemberToGroup, removeMemberFromGroup,
 } from "@/lib/api/groups";
+import { type Group } from "@/lib/types";
 
 export function useGroups() {
   const { getToken, isLoaded } = useAuth();
@@ -37,7 +38,7 @@ export function useCreateGroup() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Partial<Group>) => {
       const token = await getToken();
       return createGroup(data, token);
     },
@@ -49,7 +50,7 @@ export function useUpdateGroup() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Group> }) => {
       const token = await getToken();
       return updateGroup(id, data, token);
     },

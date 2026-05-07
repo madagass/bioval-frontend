@@ -13,7 +13,7 @@ export default function UsersPage() {
       allowedRoles={["admin_global", "admin_metier"]}
       fallback={
         <div className="text-muted-foreground text-sm">
-          You don't have access to this page.
+          You don&apos;t have access to this page.
         </div>
       }
     >
