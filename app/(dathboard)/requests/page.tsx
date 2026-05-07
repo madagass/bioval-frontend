@@ -1,40 +1,16 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@clerk/nextjs";
-import { getLogs } from "@/lib/api/logs";
+import { useRequests } from "@/lib/hooks/use-requests";
 import { PageHeader } from "@/components/shared/page-header";
-import { DataTable } from "@/components/shared/data-table";
+import { RequestsTable } from "@/components/requests/requests-table";
 import { RoleGuard } from "@/components/shared/role-guard";
-import { formatDateTime } from "@/lib/utils";
-import { type Log } from "@/lib/types";
 
-const columns = [
-  { key: "id", label: "ID" },
-  { key: "user_email", label: "User" },
-  { key: "action", label: "Action" },
-  {
-    key: "created_at",
-    label: "Date",
-    render: (row: Log) => formatDateTime(row.created_at),
-  },
-];
-
-export default function LogsPage() {
-  const { getToken, isLoaded } = useAuth();
-  const { data, isLoading } = useQuery({
-    queryKey: ["logs"],
-    queryFn: async () => {
-      const token = await getToken();
-      if (!token) return null;
-      return getLogs(token);
-    },
-    enabled: isLoaded,
-  });
+export default function RequestsPage() {
+  const { data, isLoading } = useRequests();
 
   return (
     <RoleGuard
-      allowedRoles={["admin_global"]}
+      allowedRoles={["admin_global", "admin_metier"]}
       fallback={
         <div className="text-muted-foreground text-sm">
           You don&apos;t have access to this page.
@@ -42,14 +18,11 @@ export default function LogsPage() {
       }
     >
       <PageHeader
-        title="Activity Logs"
-        description="Monitor all platform activity"
+        title="Access Requests"
+        description="Review and manage platform access requests"
       />
-      <DataTable
+      <RequestsTable
         data={data?.results ?? []}
-        columns={columns}
-        searchKey="user_email"
-        searchPlaceholder="Search by email..."
         isLoading={isLoading}
       />
     </RoleGuard>
