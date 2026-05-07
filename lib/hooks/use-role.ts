@@ -3,12 +3,19 @@
 import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import { type Role } from "@/lib/types";
-import { isAdmin, isAdminGlobal, isAdminMetier, isAdminExterne, isUserInterne, isUserExterne } from "@/lib/utils";
+import {
+  isAdmin,
+  isAdminGlobal,
+  isAdminMetier,
+  isAdminExterne,
+  isUserInterne,
+  isUserExterne,
+} from "@/lib/utils";
 
 export function useRole() {
-  const { getToken, isLoaded } = useAuth();
+  const { getToken, isLoaded: clerkLoaded } = useAuth();
 
-  const { data: user } = useQuery({
+  const { data: user, isFetched } = useQuery({
     queryKey: ["me"],
     queryFn: async () => {
       const token = await getToken();
@@ -19,7 +26,7 @@ export function useRole() {
       if (!res.ok) return null;
       return res.json();
     },
-    enabled: isLoaded,
+    enabled: clerkLoaded,
     retry: 3,
   });
 
@@ -27,7 +34,7 @@ export function useRole() {
 
   return {
     role,
-    isLoaded: !!user,
+    isLoaded: isFetched,
     isAdmin: role ? isAdmin(role) : false,
     isAdminGlobal: role ? isAdminGlobal(role) : false,
     isAdminMetier: role ? isAdminMetier(role) : false,

@@ -7,13 +7,8 @@ const isPublicRoute = createRouteMatcher([
   "/",
 ]);
 
-const isAdminRoute = createRouteMatcher([
-  "/users(.*)",
-  "/logs(.*)",
-]);
-
 export default clerkMiddleware(async (auth, req) => {
-  const { userId, sessionClaims } = await auth();
+  const { userId } = await auth();
 
   if (!userId && !isPublicRoute(req)) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
