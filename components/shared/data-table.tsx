@@ -26,7 +26,7 @@ interface DataTableProps<T> {
   isLoading?: boolean;
 }
 
-export function DataTable<T extends Record<string, unknown>>({
+export function DataTable<T extends object>({
   data,
   columns,
   searchKey,
@@ -37,8 +37,10 @@ export function DataTable<T extends Record<string, unknown>>({
 
   const filtered = searchKey
     ? data.filter((row) =>
-        String(row[searchKey]).toLowerCase().includes(search.toLowerCase())
-      )
+      String((row as Record<string, unknown>)[searchKey as string])
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
     : data;
 
   return (
@@ -81,7 +83,7 @@ export function DataTable<T extends Record<string, unknown>>({
                 <TableRow key={i}>
                   {columns.map((col) => (
                     <TableCell key={col.key}>
-                      {col.render ? col.render(row) : String(row[col.key] ?? "")}
+                      {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key] ?? "")}
                     </TableCell>
                   ))}
                 </TableRow>
