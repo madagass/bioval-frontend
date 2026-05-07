@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRole } from "@/lib/hooks/use-role";
 import {
   useToggleFreeAccess,
@@ -18,9 +19,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { UserDetailDialog } from "@/components/users/user-detail-dialog";
 import { getRoleLabel, formatDate } from "@/lib/utils";
 import { type User } from "@/lib/types";
-import { Trash2 } from "lucide-react";
+import { Trash2, Eye } from "lucide-react";
 import { toast } from "sonner";
 
 interface UsersTableProps {
@@ -34,6 +36,7 @@ export function UsersTable({ data, isLoading }: UsersTableProps) {
   const { mutate: toggleActive } = useToggleUserActive();
   const { mutate: updateRole } = useUpdateUserRole();
   const { mutate: deleteUser } = useDeleteUser();
+  const [selected, setSelected] = useState<User | null>(null);
 
   const columns = [
     {
@@ -52,7 +55,7 @@ export function UsersTable({ data, isLoading }: UsersTableProps) {
       render: (row: User) =>
         isAdminGlobal ? (
           <Select
-            defaultValue={row.role}
+            value={row.role}
             onValueChange={(value) => {
               updateRole({ id: row.id, role: value });
               toast.success("Role updated");
@@ -61,7 +64,7 @@ export function UsersTable({ data, isLoading }: UsersTableProps) {
             <SelectTrigger className="w-40 h-8 text-xs">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper">
               <SelectItem value="admin_global">Admin Global</SelectItem>
               <SelectItem value="admin_metier">Admin Métier</SelectItem>
               <SelectItem value="admin_externe">Admin Externe</SelectItem>
@@ -110,30 +113,50 @@ export function UsersTable({ data, isLoading }: UsersTableProps) {
     {
       key: "actions",
       label: "",
-      render: (row: User) =>
-        isAdminGlobal ? (
+      render: (row: User) => (
+        <div className="flex items-center gap-2 justify-end">
           <Button
             size="icon"
             variant="ghost"
-            className="h-8 w-8 text-red-600 hover:text-red-700"
-            onClick={() => {
-              deleteUser(row.id);
-              toast.success("User deleted");
-            }}
+            className="h-8 w-8"
+            onClick={() => setSelected(row)}
           >
-            <Trash2 className="h-4 w-4" />
+            <Eye className="h-4 w-4" />
           </Button>
-        ) : null,
+          {isAdminGlobal && (
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 text-red-600 hover:text-red-700"
+              onClick={() => {
+                deleteUser(row.id);
+                toast.success("User deleted");
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      ),
     },
   ];
 
   return (
-    <DataTable
-      data={data}
-      columns={columns}
-      searchKey="email"
-      searchPlaceholder="Search by email..."
-      isLoading={isLoading}
-    />
+    <>
+      <DataTable
+        data={data}
+        columns={columns}
+        searchKey="email"
+        searchPlaceholder="Search by email..."
+        isLoading={isLoading}
+      />
+      {selected && (
+        <UserDetailDialog
+          user={selected}
+          open={!!selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
+    </>
   );
 }
