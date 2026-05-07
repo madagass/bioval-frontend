@@ -85,44 +85,6 @@ The app will be available at `http://localhost:3000`.
 
 ---
 
-## Project Structure
-
-```
-bioval-frontend/
-├── app/
-│   ├── (auth)/
-│   │   ├── sign-in/        # Clerk sign-in page
-│   │   └── sign-up/        # Clerk sign-up page
-│   └── (dashboard)/
-│       ├── dashboard/      # Home dashboard with stats
-│       ├── datasets/       # Dataset list and detail
-│       ├── requests/       # Access request management
-│       ├── users/          # User management
-│       ├── groups/         # Group management
-│       ├── subscriptions/  # Subscription management
-│       ├── logs/           # Activity logs
-│       ├── settings/       # User profile (Clerk)
-│       └── layout.tsx      # Dashboard shell (sidebar + header)
-├── components/
-│   ├── datasets/           # Dataset table, upload dialog, card
-│   ├── groups/             # Groups table, group dialog
-│   ├── requests/           # Requests table, detail dialog
-│   ├── subscriptions/      # Subscription card, Stripe button
-│   ├── users/              # Users table, detail dialog
-│   ├── layout/             # Sidebar, header, mobile nav, sync-user
-│   └── shared/             # DataTable, PageHeader, StatCard, RoleGuard
-├── lib/
-│   ├── api/                # API client functions (one file per resource)
-│   ├── hooks/              # TanStack Query hooks (one file per resource)
-│   ├── providers/          # QueryProvider, ThemeProvider
-│   ├── types/              # TypeScript interfaces
-│   └── utils.ts            # cn(), formatDate(), role helpers
-├── middleware.ts            # Clerk auth middleware
-└── next.config.ts
-```
-
----
-
 ## Authentication Flow
 
 1. User signs in via Clerk (`/sign-in`)
